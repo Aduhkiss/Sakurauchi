@@ -25,7 +25,9 @@ import me.atticuszambrana.atticus.commands.impl.relationships.DivorceCommand;
 import me.atticuszambrana.atticus.commands.impl.relationships.MarriageStatusCommand;
 import me.atticuszambrana.atticus.commands.impl.relationships.MarryCommand;
 import me.atticuszambrana.atticus.commands.impl.shards.BalCommand;
+import me.atticuszambrana.atticus.commands.impl.shards.EconomyCommand;
 import me.atticuszambrana.atticus.commands.impl.shards.GiveShardsCommand;
+import me.atticuszambrana.atticus.commands.impl.shards.PayCommand;
 import me.atticuszambrana.atticus.commands.impl.shards.TakeShardsCommand;
 import me.atticuszambrana.atticus.permissions.Rank;
 import me.atticuszambrana.atticus.util.LogUtil;
@@ -59,6 +61,8 @@ public class CommandCenter implements MessageCreateListener {
 		register(new BalCommand());
 		register(new GiveShardsCommand());
 		register(new TakeShardsCommand());
+		register(new EconomyCommand());
+		register(new PayCommand());
 		
 		// Gambling System
 		register(new CoinflipCommand());
