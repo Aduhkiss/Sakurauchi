@@ -32,4 +32,12 @@ public class Marriage {
 	public User getSpouseTwo() {
 		return spouse_two;
 	}
+	
+	public User getOtherSpouse(User user) {
+		if(getSpouseOne().getId() == user.getId()) {
+			return getSpouseTwo();
+		} else {
+			return getSpouseOne();
+		}
+	}
 }

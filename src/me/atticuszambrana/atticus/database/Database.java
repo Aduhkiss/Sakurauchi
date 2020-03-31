@@ -32,6 +32,10 @@ public class Database {
 	private Connection connection;
 	
 	public Database() {
+		connect();
+	}
+	
+	public void connect() {
 		// When the object gets created, lets connect!
 		LogUtil.info("Database", "Connecting to SQL Server...");
 		try {

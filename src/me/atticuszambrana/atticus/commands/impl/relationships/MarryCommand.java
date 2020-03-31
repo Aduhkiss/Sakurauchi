@@ -43,6 +43,15 @@ public class MarryCommand extends Command {
 			return;
 		}
 		
+//		if(target.isBot()) {
+//			EmbedBuilder err = new EmbedBuilder();
+//			err.setColor(Color.RED);
+//			err.setTitle("Uhh.. Why?");
+//			err.setDescription("Dude");
+//			event.getChannel().sendMessage(err);
+//			return;
+//		}
+		
 		Relationships rel = (Relationships) PluginManager.getPlugin(5);
 		try {
 			

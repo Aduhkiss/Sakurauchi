@@ -12,12 +12,11 @@ import org.javacord.api.listener.message.MessageCreateListener;
 import me.atticuszambrana.atticus.Start;
 import me.atticuszambrana.atticus.commands.Command;
 import me.atticuszambrana.atticus.commands.impl.basic.HelpCommand;
+import me.atticuszambrana.atticus.commands.impl.children.ListChildrenCommand;
+import me.atticuszambrana.atticus.commands.impl.children.ProcreateCommand;
 import me.atticuszambrana.atticus.commands.impl.dev.RefreshPermsCommand;
 import me.atticuszambrana.atticus.commands.impl.dev.RestartCommand;
-import me.atticuszambrana.atticus.commands.impl.dev.SystemInfoCommand;
-import me.atticuszambrana.atticus.commands.impl.dev.TestCommand;
 import me.atticuszambrana.atticus.commands.impl.dev.UpdateRankCommand;
-import me.atticuszambrana.atticus.commands.impl.dev.UserInfoCommand;
 import me.atticuszambrana.atticus.commands.impl.gambling.CoinflipCommand;
 import me.atticuszambrana.atticus.commands.impl.relationships.AcceptMarriageCommand;
 import me.atticuszambrana.atticus.commands.impl.relationships.DenyMarriageCommand;
@@ -29,6 +28,7 @@ import me.atticuszambrana.atticus.commands.impl.shards.EconomyCommand;
 import me.atticuszambrana.atticus.commands.impl.shards.GiveShardsCommand;
 import me.atticuszambrana.atticus.commands.impl.shards.PayCommand;
 import me.atticuszambrana.atticus.commands.impl.shards.TakeShardsCommand;
+import me.atticuszambrana.atticus.database.Database;
 import me.atticuszambrana.atticus.permissions.Rank;
 import me.atticuszambrana.atticus.util.LogUtil;
 import me.atticuszambrana.atticus.util.StringUtil;
@@ -47,12 +47,9 @@ public class CommandCenter implements MessageCreateListener {
 	// Method run by the main class to get all commands registered, I will be sorting them into their individual groups with comments
 	public void setup() {
 		// Developer Commands
-		register(new TestCommand());
-		register(new UserInfoCommand());
 		register(new RefreshPermsCommand());
 		register(new UpdateRankCommand());
 		register(new RestartCommand());
-		register(new SystemInfoCommand());
 		
 		// Basic Commands
 		register(new HelpCommand());
@@ -73,6 +70,10 @@ public class CommandCenter implements MessageCreateListener {
 		register(new AcceptMarriageCommand());
 		register(new DenyMarriageCommand());
 		register(new DivorceCommand());
+		
+		// Child System
+		register(new ProcreateCommand());
+		register(new ListChildrenCommand());
 	}
 	
 
@@ -94,7 +95,18 @@ public class CommandCenter implements MessageCreateListener {
 				// Permission check system
 				Rank myRank = Start.getPermManager().getRank(event.getMessageAuthor().asUser().get());
 				if(myRank.getPower() >= cmd.getValue().getRankRequired().getPower()) {
-					cmd.getValue().execute(StringUtil.toArray(event.getMessageContent()), event);
+					
+					
+					// Atticus' More Long Term bug fix for the database problem
+					try {
+						cmd.getValue().execute(StringUtil.toArray(event.getMessageContent()), event);
+					} catch(Exception ex) {
+						if(ex.getMessage().indexOf("No operations allowed after connection closed.") >= 0) {
+							LogUtil.info("Command Center", "Issue with DB Connection has been detected. Attempting to reconnect to database...");
+							Database.get().connect();
+						}
+					}
+					
 					// Then log it
 					LogUtil.info("Command Center", event.getMessage().getAuthor().getName() + " ran " + event.getMessageContent());
 					return;

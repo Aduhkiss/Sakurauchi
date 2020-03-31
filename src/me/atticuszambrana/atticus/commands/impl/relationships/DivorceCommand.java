@@ -42,6 +42,8 @@ public class DivorceCommand extends Command {
 			
 			embed.setDescription("It looks like " + m.getSpouseOne().getName() + " and " + m.getSpouseTwo().getName() + "'s Marriage has come to an end...");
 			event.getChannel().sendMessage(embed);
+			
+			rel.deleteMarriage(m);
 			return;
 			
 		} catch(SQLException ex) {
