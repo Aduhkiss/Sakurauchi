@@ -12,8 +12,11 @@ import org.javacord.api.listener.message.MessageCreateListener;
 import me.atticuszambrana.atticus.Start;
 import me.atticuszambrana.atticus.commands.Command;
 import me.atticuszambrana.atticus.commands.impl.basic.HelpCommand;
+import me.atticuszambrana.atticus.commands.impl.basic.InfoCommand;
+import me.atticuszambrana.atticus.commands.impl.children.KillCommand;
 import me.atticuszambrana.atticus.commands.impl.children.ListChildrenCommand;
 import me.atticuszambrana.atticus.commands.impl.children.ProcreateCommand;
+import me.atticuszambrana.atticus.commands.impl.children.RenameChildCommand;
 import me.atticuszambrana.atticus.commands.impl.dev.RefreshPermsCommand;
 import me.atticuszambrana.atticus.commands.impl.dev.RestartCommand;
 import me.atticuszambrana.atticus.commands.impl.dev.UpdateRankCommand;
@@ -53,6 +56,7 @@ public class CommandCenter implements MessageCreateListener {
 		
 		// Basic Commands
 		register(new HelpCommand());
+		register(new InfoCommand());
 		
 		// Treasure Shards System
 		register(new BalCommand());
@@ -74,6 +78,8 @@ public class CommandCenter implements MessageCreateListener {
 		// Child System
 		register(new ProcreateCommand());
 		register(new ListChildrenCommand());
+		register(new RenameChildCommand());
+		register(new KillCommand());
 	}
 	
 
@@ -96,16 +102,7 @@ public class CommandCenter implements MessageCreateListener {
 				Rank myRank = Start.getPermManager().getRank(event.getMessageAuthor().asUser().get());
 				if(myRank.getPower() >= cmd.getValue().getRankRequired().getPower()) {
 					
-					
-					// Atticus' More Long Term bug fix for the database problem
-					try {
-						cmd.getValue().execute(StringUtil.toArray(event.getMessageContent()), event);
-					} catch(Exception ex) {
-						if(ex.getMessage().indexOf("No operations allowed after connection closed.") >= 0) {
-							LogUtil.info("Command Center", "Issue with DB Connection has been detected. Attempting to reconnect to database...");
-							Database.get().connect();
-						}
-					}
+					cmd.getValue().execute(StringUtil.toArray(event.getMessageContent()), event);
 					
 					// Then log it
 					LogUtil.info("Command Center", event.getMessage().getAuthor().getName() + " ran " + event.getMessageContent());

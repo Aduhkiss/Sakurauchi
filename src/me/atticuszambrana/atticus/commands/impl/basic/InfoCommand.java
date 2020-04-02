@@ -23,6 +23,7 @@ public class InfoCommand extends Command {
 		embed.setColor(Color.YELLOW);
 		
 		embed.addField("Version", Start.getBuild());
+		embed.addField("Coded by", "Atticus#6362");
 		
 		event.getChannel().sendMessage(embed);
 		return;

@@ -60,8 +60,34 @@ public class Database {
 		
 		LogUtil.info("Database", "Success!");
 		
+		checkConnection();
+		
 		// The fix
 		applyFix();
+	}
+	
+	private void checkConnection() {
+		// Do a thing to make sure the bot is connected to the database
+		new Thread() {
+			public void run() {
+				// Check
+				
+				try {
+					if(connection == null && connection.isClosed()) {
+						connect();
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				
+				// Wait
+				try {
+					Thread.sleep(1000 * 60);
+				} catch (InterruptedException e) { e.printStackTrace(); }
+				// Re-Run
+				checkConnection();
+			}
+		}.start();
 	}
 	
 	// A fix for that bug mentioned above

@@ -44,15 +44,15 @@ public class ListChildrenCommand extends Command {
 				EmbedBuilder em = new EmbedBuilder();
 				em.setColor(c.getGender().getColor());
 				em.setTitle(c.getName());
-				em.addField("Name", c.getName());
-				em.addField("ID", String.valueOf(c.getID()));
-				em.addField("Gender", c.getGender().getName());
+				em.addInlineField("Name", c.getName());
+				em.addInlineField("ID", String.valueOf(c.getID()));
+				em.addInlineField("Gender", c.getGender().getName());
 				
 				LocalDate date = new Timestamp(c.getBirthstamp()).toLocalDateTime().toLocalDate();
 				LocalDate now = LocalDate.now();
 				Period diff = Period.between(date, now);
 				
-				em.addField("Age", diff.getDays() + " Days, " + diff.getMonths() + " Months, " + diff.getYears() + " Years");
+				em.addInlineField("Age", diff.getDays() + " Days, " + diff.getMonths() + " Months, " + diff.getYears() + " Years");
 				event.getChannel().sendMessage(em);
 			}
 			

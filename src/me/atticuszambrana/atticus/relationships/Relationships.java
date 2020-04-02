@@ -35,6 +35,10 @@ public class Relationships extends Plugin implements MessageCreateListener {
 	// To keep track of who is in the process of "setting up" their child
 	public Map<User, Integer> ChildSetup = new HashMap<>();
 	
+	// To keep track of fucking admins literally killing children
+	public Map<User, Integer> ChildKillings = new HashMap<>();
+	public Map<User, Child> ChildToEnd = new HashMap<>();
+	
 	public Relationships() {
 		super("Relationships");
 	}
@@ -168,6 +172,15 @@ public class Relationships extends Plugin implements MessageCreateListener {
 		return child;
 	}
 	
+	public void killChild(Child child) throws SQLException {
+		conn.createStatement().executeUpdate("DELETE FROM `Children` WHERE `id` = '" + child.getID() + "';");
+	}
+	
+	public void updateChildName(Child child, String name) throws SQLException {
+		System.out.print("UPDATE `Children` SET `name` = '" + name + "' WHERE `id` = '" + child.getID() + "';");
+		conn.createStatement().executeUpdate("UPDATE `Children` SET `name` = '" + name + "' WHERE `id` = '" + child.getID() + "';");
+	}
+	
 	public Map<Integer, MarriageProposal> getProposals() {
 		return Proposals;
 	}
@@ -181,10 +194,39 @@ public class Relationships extends Plugin implements MessageCreateListener {
 		if(ChildSetup.get(event.getMessageAuthor().asUser().get()) == null) {
 			return;
 		}
+		if(ChildKillings.get(event.getMessageAuthor().asUser().get()) == null) {
+			return;
+		}
 		if(m.indexOf("^") >= 0) { return; }
 		
+		// FOR CHILD DESTRUCTION
+		if(ChildKillings.get(event.getMessageAuthor().asUser().get()) == 0) {
+			if(m.equalsIgnoreCase("YES") || m.equalsIgnoreCase("YEAH")) {
+				ChildKillings.remove(event.getMessageAuthor().asUser().get());
+				
+				// Do the thing
+				Child c = this.ChildToEnd.get(event.getMessageAuthor().asUser().get());
+				try {
+					this.killChild(c);
+				} catch (SQLException e) {
+					e.printStackTrace();
+					event.getChannel().sendMessage(MessageUtil.message(Color.RED, "Something went wrong.", "The car broke down before I could run over " + c.getName() + "!"));
+					return;
+				}
+				
+				event.getChannel().sendMessage(MessageUtil.message(Color.GREEN, "Done.", c.getName() + " has successfully been put down..."));
+				return;
+			}
+			if(m.equalsIgnoreCase("NO") || m.equalsIgnoreCase("NAH")) {
+				event.getChannel().sendMessage(MessageUtil.message(Color.RED, "Action Cancelled.", "OK. I have cancelled the action."));
+				ChildKillings.remove(event.getMessageAuthor().asUser().get());
+				return;
+			}
+		}
+		
+		// FOR CHILD CREATION
 		if(ChildSetup.get(event.getMessageAuthor().asUser().get()) == 0) {
-			if(m.equalsIgnoreCase("YES")) {
+			if(m.equalsIgnoreCase("YES") || m.equalsIgnoreCase("YEAH")) {
 				ChildSetup.put(event.getMessageAuthor().asUser().get(), 1);
 				// Complete the transaction for the treasure shards
 				try {
@@ -208,7 +250,7 @@ public class Relationships extends Plugin implements MessageCreateListener {
 				
 				return;
 			}
-			if(m.equalsIgnoreCase("NO")) {
+			if(m.equalsIgnoreCase("NO") || m.equalsIgnoreCase("NAH")) {
 				ChildSetup.remove(event.getMessageAuthor().asUser().get());
 				event.getChannel().sendMessage(MessageUtil.message(Color.RED, "Action Cancelled", "Okay, I have cancelled the child creation process."));
 				return;

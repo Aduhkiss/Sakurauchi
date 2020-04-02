@@ -4,6 +4,7 @@ package me.atticuszambrana.atticus;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.activity.ActivityType;
+import org.javacord.api.util.logging.ExceptionLogger;
 
 import com.google.gson.Gson;
 
@@ -21,10 +22,13 @@ import me.atticuszambrana.atticus.util.UtilTime.TimeUnit;
 
 public class Start {
 	
-	private static String BUILD = "v1.2";
+	private static String BUILD = "v1.4";
 	
 	private static DiscordApi api;
-	private static boolean debugMessages = true;
+	// TESTING: For Shard testing
+	private static DiscordApiBuilder builder;
+	
+	private static boolean debugMessages = false;
 	
 	// Stuff
 	private static PermissionsManager permissions;
@@ -65,8 +69,20 @@ public class Start {
 		 try {
 			 api = new DiscordApiBuilder()
 					 .setToken(getConfig().getToken())
+					 .setWaitForServersOnStartup(false)
 					 .login()
 					 .join();
+			 
+//			 // For Shard Testing
+//			 new DiscordApiBuilder()
+//					 .setToken(getConfig().getToken())
+//					 .setRecommendedTotalShards().join()
+//					 .loginAllShards()
+//					 .forEach(shardFuture -> shardFuture
+//							 .thenAccept(Start::onShardLogin)
+//							 .exceptionally(ExceptionLogger.get())
+//							 );
+			 
 		 } catch(IllegalStateException ex) {
 			 LogUtil.info("Discord API", "Something really bad happened while trying to login to Discord! Heres the error: " + ex.getMessage());
 			 LogUtil.info("System", "A critical error has been detected. Dispatching Server Support team and shutting down machine...");
@@ -104,6 +120,10 @@ public class Start {
 		api.addMessageCreateListener((Relationships) PluginManager.getPlugin(5));
 		
 		LogUtil.info("System", "All Done! Successfully started in " + UtilTime.convertString(System.currentTimeMillis() - epoch, 1, TimeUnit.FIT) + ".");
+	 }
+	 
+	 private static void onShardLogin(DiscordApi api) {
+		 
 	 }
 	 
 	 public static DiscordApi getDiscord() {

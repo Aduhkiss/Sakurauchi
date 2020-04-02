@@ -42,8 +42,8 @@ public class MarriageStatusCommand extends Command {
 				embed.setTitle(t.getName() + "'s Marriage Status");
 				
 				embed.addField("Married?", "Yes");
-				embed.addField("Spouse One", m.getSpouseOne().getName());
-				embed.addField("Spouse Two", m.getSpouseTwo().getName());
+				embed.addInlineField("Spouse One", m.getSpouseOne().getName());
+				embed.addInlineField("Spouse Two", m.getSpouseTwo().getName());
 				
 				event.getChannel().sendMessage(embed);
 				return;
