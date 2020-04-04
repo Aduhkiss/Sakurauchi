@@ -65,7 +65,7 @@ public class RenameChildCommand extends Command {
 				}
 				
 				// If they have enough, then take 150
-				shards.takeShards(event.getMessageAuthor().asUser().get(), 150);
+				shards.takeShards("[CHILDMGR]", event.getMessageAuthor().asUser().get(), 150);
 				
 				// Then actually rename the child with the Relationships API
 				rel.updateChildName(rel.getChild(id), name);

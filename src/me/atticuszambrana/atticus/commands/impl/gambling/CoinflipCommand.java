@@ -80,7 +80,7 @@ public class CoinflipCommand extends Command {
 		Bet result = null;
 		
 		try {
-			shards.takeShards(event.getMessageAuthor().asUser().get(), (amount));
+			shards.takeShards("[ATTICUSCASINO]", event.getMessageAuthor().asUser().get(), (amount));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			EmbedBuilder err = new EmbedBuilder();
@@ -104,7 +104,7 @@ public class CoinflipCommand extends Command {
 			
 			// It was, so give them double their money
 			try {
-				shards.giveShards(event.getMessageAuthor().asUser().get(), toGive);
+				shards.giveShards("[ATTICUSCASINO]", event.getMessageAuthor().asUser().get(), toGive);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				EmbedBuilder err = new EmbedBuilder();

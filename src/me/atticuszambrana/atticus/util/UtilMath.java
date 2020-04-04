@@ -7,7 +7,7 @@ import java.util.Locale;
 public class UtilMath {
 	
 	/*
-	 * Taken from Mineplex leak of 2015
+	 * Taken from Mineplex Source code from 2015
 	 */
 	
 	public static double trim(int degree, double d) 

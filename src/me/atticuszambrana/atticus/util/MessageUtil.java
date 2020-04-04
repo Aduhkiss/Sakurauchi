@@ -12,4 +12,20 @@ public class MessageUtil {
 		embed.setDescription(message);
 		return embed;
 	}
+	
+	public static EmbedBuilder error(ErrorType type) {
+		EmbedBuilder embed = new EmbedBuilder();
+		embed.setColor(Color.RED);
+		if(type == ErrorType.SQL_ERROR) {
+			embed.setTitle("Something went wrong");
+			embed.setDescription("There was a problem while communicating with the database. Please try again later.");
+		}
+		
+		return embed;
+	}
+	
+	public enum ErrorType {
+		SQL_ERROR,
+		
+	}
 }

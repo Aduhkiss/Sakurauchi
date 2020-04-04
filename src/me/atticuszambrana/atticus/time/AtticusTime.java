@@ -1,5 +1,8 @@
 package me.atticuszambrana.atticus.time;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +13,7 @@ public class AtticusTime {
 	// Author: Atticus Zambrana
 	
 	private LocalTime time;
+	private LocalDate date;
 	private long milli;
 	private TimeType type;
 	
@@ -19,14 +23,28 @@ public class AtticusTime {
 		milli = System.currentTimeMillis();
 	}
 	
-	public String getDay() {
+	public AtticusTime(long milli) {
+		this.milli = milli;
+		LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(milli), ZoneId.systemDefault());
+		this.date = localDateTime.toLocalDate();
+	}
+	
+	public String getDayFromTime() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		return time.format(formatter);
 	}
 	
-	public String getTime() {
+	public String getTimeFromTime() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss");
 		return time.format(formatter);
+	}
+	
+	public String getFullFromDate() {
+		//TODO: FIX THIS YOU DUMB
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm:ss");
+		//return date.format(dateFormatter) + "" + date.format(timeFormatter) + "" + getType().toString();
+		return date.format(dateFormatter);
 	}
 	
 	public long getMilli() {

@@ -57,8 +57,8 @@ public class PayCommand extends Command {
 				return;
 			}
 			
-			shards.takeShards(author, amount);
-			shards.giveShards(target, amount);
+			shards.takeShards(target.getName(), author, amount);
+			shards.giveShards(author.getName(), target, amount);
 			
 			EmbedBuilder err = new EmbedBuilder();
 			err.setColor(Color.GREEN);

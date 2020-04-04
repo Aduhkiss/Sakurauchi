@@ -14,6 +14,7 @@ import me.atticuszambrana.atticus.Plugin;
 import me.atticuszambrana.atticus.Start;
 import me.atticuszambrana.atticus.database.Database;
 import me.atticuszambrana.atticus.manager.PluginManager;
+import me.atticuszambrana.atticus.util.LogUtil;
 
 public class TreasureShards extends Plugin implements MessageCreateListener {
 	
@@ -58,27 +59,55 @@ public class TreasureShards extends Plugin implements MessageCreateListener {
 		return;
 	}
 	
-	public void giveShards(User user, int amount) throws SQLException {
-		check(user);
+	public void giveShards(String caller, User target, int amount) throws SQLException {
+		check(target);
 		int old = 0;
 		try {
-			old = getShards(user);
+			old = getShards(target);
 		} catch(SQLException ex) {}
 		
-		setShards(user, old + amount);
+		setShards(target, old + amount);
 		
-		// will use the above set method
+		//TODO: Record this transaction in the database
+		if(caller.equals("[NOCOUNT]")) {
+			return;
+		}
+		
+		new Thread() {
+			public void run() {
+				try {
+					conn.createStatement().executeUpdate("INSERT INTO `EcoLogs` (`target`, `caller`, `amount`, `type`) VALUES ('" + target.getDiscriminatedName() + "', '" + caller + "', '" + amount + "', '" + "<--');");
+				} catch(SQLException ex) {
+					LogUtil.info("Economy Logger", "There was a problem logging this transaction: " + ex.getMessage());
+				}
+			}
+		}.start();
 	}
 	
-	public void takeShards(User user, int amount) throws SQLException {
-		check(user);
+	public void takeShards(String caller, User target, int amount) throws SQLException {
+		check(target);
 		int old = 0;
 		try {
-			old = getShards(user);
+			old = getShards(target);
 		} catch(SQLException ex) {}
 		
-		setShards(user, old - amount);
+		setShards(target, old - amount);
 		// again, will use the above set method
+		
+		//TODO: Record this transaction in the database
+		if(caller.equals("[NOCOUNT]")) {
+			return;
+		}
+		
+//		new Thread() {
+//			public void run() {
+//				try {
+//					conn.createStatement().executeUpdate("INSERT INTO `EcoLogs` (`target`, `caller`, `amount`, `type`) VALUES ('" + target.getDiscriminatedName() + "', '" + caller + "', '" + amount + "', '" + "-->');");
+//				} catch(SQLException ex) {
+//					LogUtil.info("Economy Logger", "There was a problem logging this transaction: " + ex.getMessage());
+//				}
+//			}
+//		}.start();
 	}
 	
 	/**
@@ -123,7 +152,7 @@ public class TreasureShards extends Plugin implements MessageCreateListener {
 			// Award them a shard
 			TreasureShards shards = (TreasureShards) PluginManager.getPlugin(3);
 			try {
-				shards.giveShards(event.getMessageAuthor().asUser().get(), 1);
+				shards.giveShards("[NOCOUNT]", event.getMessageAuthor().asUser().get(), 1);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

@@ -1,15 +1,11 @@
-# Princess Zelda Discord bot
+# Sakurauchi Discord Bot
 
-Created by Atticus Zambrana for use with Hyrulean Adventure Discord Server
+Developed by Atticus Zambrana
 
-(C) 2020 Atticus Zambrana. All rights reserved.
 
-### Commands
+### Treasure Shards System
 
-### Permissions System
-
-The permissions system is entirely custom written...
-
-### Error Codes
-
-* GG-DUG01 - The bot cannot get an instance of Atticus' Discord account. Either due to an InteruppedException or ExecutionException
+* [ATTICUSCASINO] - Atticus Casino System
+* [CHILDMGR] - Child Management System
+* [RELATIONMGR] - Relationship Management System
+* [ADMIN-(Admin name here)] - Admin command

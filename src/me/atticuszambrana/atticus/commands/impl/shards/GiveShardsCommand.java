@@ -20,6 +20,7 @@ public class GiveShardsCommand extends Command {
 
 	@Override
 	public void execute(String[] args, MessageCreateEvent event) {
+		User author = event.getMessageAuthor().asUser().get();
 		if(args.length == 1 && args.length == 2) {
 			EmbedBuilder err = new EmbedBuilder();
 			err.setColor(Color.RED);
@@ -50,7 +51,7 @@ public class GiveShardsCommand extends Command {
 		TreasureShards shards = (TreasureShards) PluginManager.getPlugin(3);
 		
 		try {
-			shards.giveShards(target, amount);
+			shards.giveShards("[ADMIN-" + author.getName() + "]", target, amount);
 		} catch(SQLException ex) {
 			EmbedBuilder err = new EmbedBuilder();
 			err.setColor(Color.RED);

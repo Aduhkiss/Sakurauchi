@@ -230,7 +230,7 @@ public class Relationships extends Plugin implements MessageCreateListener {
 				ChildSetup.put(event.getMessageAuthor().asUser().get(), 1);
 				// Complete the transaction for the treasure shards
 				try {
-					shards.takeShards(event.getMessageAuthor().asUser().get(), 50);
+					shards.takeShards("[RELATIONMGR]", event.getMessageAuthor().asUser().get(), 50);
 				} catch (SQLException e) {
 					event.getChannel().sendMessage(MessageUtil.message(Color.RED, "Something bad happened", "Something went wrong with the transaction. Your treasure shards have not been taken, and the child creation process has been cancelled. Try again later."));
 					e.printStackTrace();

@@ -19,8 +19,13 @@ import me.atticuszambrana.atticus.commands.impl.children.ProcreateCommand;
 import me.atticuszambrana.atticus.commands.impl.children.RenameChildCommand;
 import me.atticuszambrana.atticus.commands.impl.dev.RefreshPermsCommand;
 import me.atticuszambrana.atticus.commands.impl.dev.RestartCommand;
+import me.atticuszambrana.atticus.commands.impl.dev.SayCommand;
 import me.atticuszambrana.atticus.commands.impl.dev.UpdateRankCommand;
 import me.atticuszambrana.atticus.commands.impl.gambling.CoinflipCommand;
+import me.atticuszambrana.atticus.commands.impl.punishment.BanCommand;
+import me.atticuszambrana.atticus.commands.impl.punishment.KickCommand;
+import me.atticuszambrana.atticus.commands.impl.punishment.ListKicksCommand;
+import me.atticuszambrana.atticus.commands.impl.punishment.ModLogCommand;
 import me.atticuszambrana.atticus.commands.impl.relationships.AcceptMarriageCommand;
 import me.atticuszambrana.atticus.commands.impl.relationships.DenyMarriageCommand;
 import me.atticuszambrana.atticus.commands.impl.relationships.DivorceCommand;
@@ -31,7 +36,8 @@ import me.atticuszambrana.atticus.commands.impl.shards.EconomyCommand;
 import me.atticuszambrana.atticus.commands.impl.shards.GiveShardsCommand;
 import me.atticuszambrana.atticus.commands.impl.shards.PayCommand;
 import me.atticuszambrana.atticus.commands.impl.shards.TakeShardsCommand;
-import me.atticuszambrana.atticus.database.Database;
+import me.atticuszambrana.atticus.commands.impl.subscripton.RedeemCommand;
+import me.atticuszambrana.atticus.commands.impl.subscripton.SubStatusCommand;
 import me.atticuszambrana.atticus.permissions.Rank;
 import me.atticuszambrana.atticus.util.LogUtil;
 import me.atticuszambrana.atticus.util.StringUtil;
@@ -53,6 +59,7 @@ public class CommandCenter implements MessageCreateListener {
 		register(new RefreshPermsCommand());
 		register(new UpdateRankCommand());
 		register(new RestartCommand());
+		register(new SayCommand());
 		
 		// Basic Commands
 		register(new HelpCommand());
@@ -80,6 +87,16 @@ public class CommandCenter implements MessageCreateListener {
 		register(new ListChildrenCommand());
 		register(new RenameChildCommand());
 		register(new KillCommand());
+		
+		// Premium Subscription Commands
+		register(new SubStatusCommand());
+		register(new RedeemCommand());
+		
+		// Punishment System Commands
+		register(new ListKicksCommand());
+		register(new KickCommand());
+		register(new BanCommand());
+		register(new ModLogCommand());
 	}
 	
 

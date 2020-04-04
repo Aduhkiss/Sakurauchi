@@ -1,10 +1,10 @@
 package me.atticuszambrana.atticus;
 
 
+import org.javacord.api.AccountType;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.activity.ActivityType;
-import org.javacord.api.util.logging.ExceptionLogger;
 
 import com.google.gson.Gson;
 
@@ -16,6 +16,7 @@ import me.atticuszambrana.atticus.manager.PermissionsManager;
 import me.atticuszambrana.atticus.manager.PluginManager;
 import me.atticuszambrana.atticus.relationships.Relationships;
 import me.atticuszambrana.atticus.shards.TreasureShards;
+import me.atticuszambrana.atticus.subscriptions.Subscription;
 import me.atticuszambrana.atticus.util.LogUtil;
 import me.atticuszambrana.atticus.util.UtilTime;
 import me.atticuszambrana.atticus.util.UtilTime.TimeUnit;
@@ -118,6 +119,10 @@ public class Start {
 		api.addMessageCreateListener((TreasureShards) PluginManager.getPlugin(3));
 		// Add the Relationship System
 		api.addMessageCreateListener((Relationships) PluginManager.getPlugin(5));
+		
+		// Subscription Service
+		api.addServerJoinListener((Subscription) PluginManager.getPlugin(6));
+		api.addServerLeaveListener((Subscription) PluginManager.getPlugin(6));
 		
 		LogUtil.info("System", "All Done! Successfully started in " + UtilTime.convertString(System.currentTimeMillis() - epoch, 1, TimeUnit.FIT) + ".");
 	 }

@@ -55,6 +55,12 @@ public class Activity extends Plugin {
 					}
 					
 					Start.getDiscord().updateActivity(ActivityType.PLAYING, "Watching " + i + " users.");
+					activityTick++;
+				}
+				if(activityTick == 4) {
+					
+					//Start.getDiscord().updateActivity(ActivityType.PLAYING, "Atticus misses you, Faith");
+					Start.getDiscord().updateActivity(ActivityType.PLAYING, "findr.today/sakurauchi to get me in your server!");
 					activityTick = 0;
 				}
 				
